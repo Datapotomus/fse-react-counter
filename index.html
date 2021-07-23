@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>React Counter</title>
+  </head>
+  <body>
+    <!-- element where application will be rendered -->
+    <div id="root"></div>
+    <!-- inlcude react, react-dom, and babael standalone from their respective cdn -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@16/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- Render a JSX expression into the <div> with id="root" -->
+    <!-- <script src="./assets/javascript/counter.js"></script> -->
+    <script type="text/babel">
+//functional component using props.*
+function OnePotato(props) {
+  return <h1>{props.name} loves {props.type} potatos!</h1>;
+  }
+  //class component using this.props.*
+  class TwoPotato extends React.Component { render() {
+  return <h1>{this.props.name} loves {this.props.type} potatos!</h1>; }
+  }
+  //the attributes passed in when rendering the components become part of the props object inside the component
+  class Counter extends React.Component {
+    /*
+    Adding a constructor so we can set our initial state
+    */
+    constructor(props) {
+      //let the parent class do its thing with props
+      super(props);
+      //setup the initial value for count in state
+      this.state = {
+        count: 0,
+        countModified: false
+      }
+    }
+
+
+    //Increment Handler event
+    incrementHandler = (event) => {
+      this.setState((state, props) =>({
+        count: state.count + 1
+      }))
+    }
+    //decrement Handler event copied and modded from increment even handler
+    
+    checkIncrement = () => {
+      this.state.countModified = true
+      if (this.state.count < 20){
+        this.incrementHandler()
+      }
+    }
+
+    decrementHandler = (event) => {
+      this.setState((state, props) =>({
+          count: state.count - 1
+          
+      }))
+    }
+    checkDecrement = () => {
+      this.state.countModified = true
+      if (this.state.count > 0){
+        this.decrementHandler()
+      }
+    }
+    componentDidMount() {
+      console.log("component mounted")
+      this.setState((state, props) =>({
+        count: (this.props.intialCount ? this.props.intialCount : 0),
+        
+      }))
+    }
+
+    //Reset Handler event
+    resetHandler = (event) => {
+      this.setState((state, props) =>({
+        count: (this.props.intialCount ? this.props.intialCount : 0),
+        countModified: false
+      }))
+    }
+
+    //simple render method just displaying the count
+    render() {
+      let resetButton;
+      let countStyle ={
+        color: 'black',
+        border: "solid black 1px",
+      }
+      if (this.state.count > 10){
+        countStyle.color = "red"
+      }
+      if (this.state.countModified){
+        resetButton = <button onClick={this.resetHandler}>Reset</button>
+      }
+      return (
+        <div> 
+          <div style={countStyle}>{this.state.count}</div>
+          <button onClick={this.checkIncrement}>increment (+)</button>
+          <button onClick={this.checkDecrement}>decrement (-)</button>
+          {resetButton}
+        </div>
+        )}
+  }
+
+  ReactDOM.render(
+    <div>
+      <Counter />
+      <Counter intialCount={0} />
+      <Counter intialCount={5} />
+      <Counter intialCount={9} />
+    </div>,
+  document.getElementById('root') );
+
+    </script>
+  </body>
+</html>
